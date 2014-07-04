@@ -1,8 +1,16 @@
-MCModify
+Clotho
 ========
-MCModify is Java library designed for easily modifying extisting Minecraft files. There are already other libraries like this for Java, Python, C#, C, C++, etc., but if you like the library interface, feel free to use it.
+Owen O'Malley
+https://github.com/omalley/clotho
 
-The repository is a NetBeans project and the code is written in Java 7. It is not yet packaged in a typical library format (e.g. .jar) however it is still readily usable.
+This project is based on mcmodify, but fixes a few problems with the parser and
+adds a map making capability. Given a save game directory, it will scan the
+upper world region files and produce a PNG of the known world. The world is
+marked with a grid and the coordinates in the game to enable you to find a
+particular location.
 
-## C++ Version
-There is also a version of the library in early development for C++11, available from the `cpp` branch.
+Clotho is the name of the youngest Greek Fate that spun the cloth of destiny.
+
+Building:
+1. install java 7 and maven 3.
+2. Use "mvn package" to build the jars
