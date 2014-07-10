@@ -1,7 +1,9 @@
 Clotho
 ========
-## Owen O'Malley (omalley@apache.org)
-## https://github.com/omalley/clotho
+* Project URL: https://github.com/omalley/clotho
+* Owen O'Malley 
+* twitter: [@owen_omalley](https://twitter.com/owen_omalley)
+* web: [Owen](http://people.apache.org/~omalley)
 
 This project is a tool to look at your Minecraft saved games with both
 a JSON view of the save file and a map view of the explored world. The
