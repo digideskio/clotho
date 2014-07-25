@@ -54,16 +54,22 @@ public class MapMaker {
   private final BufferedImage image;
   private final Graphics graphics;
   private final int xRegionMin;
+  private final int xRegionWidth;
   private final int zRegionMin;
+  private final int zRegionWidth;
+  private final int height;
+  private final int width;
   private final Color[][] colors;
 
   public MapMaker(int xRegionMin, int xRegionWidth,
                   int zRegionMin, int zRegionWidth) {
     this.xRegionMin = xRegionMin;
+    this.xRegionWidth = xRegionWidth;
     this.zRegionMin = zRegionMin;
-    int width = CUBES_PER_CHUNK * CHUNKS_PER_REGION * xRegionWidth +
+    this.zRegionWidth = zRegionWidth;
+    width = CUBES_PER_CHUNK * CHUNKS_PER_REGION * xRegionWidth +
         xRegionWidth - 1;
-    int height = CUBES_PER_CHUNK * CHUNKS_PER_REGION * zRegionWidth +
+    height = CUBES_PER_CHUNK * CHUNKS_PER_REGION * zRegionWidth +
         zRegionWidth - 1;
     image = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
     graphics = image.getGraphics();
@@ -72,27 +78,6 @@ public class MapMaker {
     colors = new Color[CUBES_PER_CHUNK][];
     for(int i=0; i < CUBES_PER_CHUNK; ++i) {
       colors[i] = new Color[CUBES_PER_CHUNK];
-    }
-    graphics.setColor(indexColor);
-    FontMetrics fontMetrics = graphics.getFontMetrics();
-    int descent = fontMetrics.getDescent();
-    int fontHeight = fontMetrics.getHeight();
-    for(int x=1; x < xRegionWidth*CHUNKS_PER_REGION/CHUNKS_PER_INDEX; ++x) {
-      int xCoord = x * CUBES_PER_CHUNK * CHUNKS_PER_INDEX + x - 1;
-      graphics.fillRect(xCoord, 0, 1, height);
-      String label = Integer.toString((x * CHUNKS_PER_INDEX +
-          xRegionMin * CHUNKS_PER_REGION) * CUBES_PER_CHUNK);
-      graphics.drawString(label, xCoord + 2 , fontHeight);
-      graphics.drawString(label, xCoord + 2 , height - descent);
-    }
-    for(int z=1; z < zRegionWidth*CHUNKS_PER_REGION/CHUNKS_PER_INDEX; ++z) {
-      int zCoord = z * CUBES_PER_CHUNK * CHUNKS_PER_INDEX + z - 1;
-      graphics.fillRect(0, zCoord, width, 1);
-      String label = Integer.toString((z * CHUNKS_PER_INDEX +
-          zRegionMin * CHUNKS_PER_REGION) * CUBES_PER_CHUNK);
-      graphics.drawString(label, 2 , zCoord + fontHeight);
-      graphics.drawString(label, width - fontMetrics.stringWidth(label) - 2,
-          zCoord + fontHeight);
     }
   }
 
@@ -170,6 +155,27 @@ public class MapMaker {
   }
 
   public void saveImage(String filename) throws IOException {
+    graphics.setColor(indexColor);
+    FontMetrics fontMetrics = graphics.getFontMetrics();
+    int descent = fontMetrics.getDescent();
+    int fontHeight = fontMetrics.getHeight();
+    for(int x=1; x < xRegionWidth*CHUNKS_PER_REGION/CHUNKS_PER_INDEX; ++x) {
+      int xCoord = x * CUBES_PER_CHUNK * CHUNKS_PER_INDEX + x - 1;
+      graphics.fillRect(xCoord, 0, 1, height);
+      String label = Integer.toString((x * CHUNKS_PER_INDEX +
+          xRegionMin * CHUNKS_PER_REGION) * CUBES_PER_CHUNK);
+      graphics.drawString(label, xCoord + 2 , fontHeight);
+      graphics.drawString(label, xCoord + 2 , height - descent);
+    }
+    for(int z=1; z < zRegionWidth*CHUNKS_PER_REGION/CHUNKS_PER_INDEX; ++z) {
+      int zCoord = z * CUBES_PER_CHUNK * CHUNKS_PER_INDEX + z - 1;
+      graphics.fillRect(0, zCoord, width, 1);
+      String label = Integer.toString((z * CHUNKS_PER_INDEX +
+          zRegionMin * CHUNKS_PER_REGION) * CUBES_PER_CHUNK);
+      graphics.drawString(label, 2 , zCoord + fontHeight);
+      graphics.drawString(label, width - fontMetrics.stringWidth(label) - 2,
+          zCoord + fontHeight);
+    }
     ImageIO.write(image, "png", new File(filename));
   }
 
